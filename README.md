@@ -1,8 +1,8 @@
 # EX01 Developing a Simple Webserver
-## Date: 03.09.2024
+## Date:01/9/2024
 
 ## AIM:
-To develop a simple webserver to serve html pages.
+To develop a simple webserver to serve html pages and display the configuration details of laptop.
 
 ## DESIGN STEPS:
 ### Step 1: 
@@ -21,54 +21,55 @@ Serving the HTML pages.
 Testing the webserver.
 
 ## PROGRAM:
-
 ```
-<html>
-     <title> Software Companies Revenue </title>
-     <body>
-           <table border = "2" cellspacing = "10" cellpading = "6">
-              <caption>TOP FIVE REVENUE SOFTWARE COMPANIES </caption>
-              <tr>
-                  <th>S.NO</th>
-                  <th>COMPANY</th>			
-                  <th>REVENUE</th>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>IBM</td>
-                  <td>29.1 Billion</td>
-             </tr>
-             <tr>
-                  <td>2</td>
-                  <td>Oracle</td>
-                  <td>29.6 Billion</td>
-             </tr>
-             <tr>
-                  <td>3</td>
-                  <td>Microsoft</td>
-                  <td>65 Billion</td>
-            </tr>
-            <tr>
-                  <td>4</td>
-                  <td>Symantic</td>
-                  <td>5.6 Billion</td>
-            </tr>
-            <tr>
-                  <td>5</td>
-                  <td>adobe</td>
-                  <td>19.8 Billion</td>
-            </tr>
-            
-        
+import platform
+from http.server import HTTPServer,BaseHTTPRequestHandler
 
-       </table>
-    </body>
+system_name = platform.system()
+node_name = platform.node()
+release = platform.release()
+version = platform.version()
+machine = platform.machine()
+processor = platform.processor()
+
+content='''
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My System Configuration</title>
+</head>
+<body>
+    <h1>My System Configuration</h1>
+    <ul>
+        <li>'''+system_name+'''</li>
+        <li>'''+node_name+'''</li>
+        <li>'''+release+'''</li>  
+        <li>'''+version+'''</li>  
+        <li>'''+machine+'''</li>  
+        <li>'''+processor+'''</li>  
+    </ul>
+</body>
 </html>
+'''
+
+class MyServer(BaseHTTPRequestHandler):
+    def do_GET(self):
+        print("Get request received...")
+        self.send_response(200) 
+        self.send_header("content-type", "text/html")       
+        self.end_headers()
+        self.wfile.write(content.encode())
+
+print("This is my webserver") 
+server_address =('',8000)
+httpd = HTTPServer(server_address,MyServer)
+httpd.serve_forever()
 ```
-
 ## OUTPUT:
+![Screenshot 2024-09-04 090631](https://github.com/user-attachments/assets/bdea80f0-cf6b-4a80-86af-8489110da6ac)
+![Screenshot 2024-09-04 090816](https://github.com/user-attachments/assets/57d59a3f-a19b-4a6d-957a-004504f5b9ae)
 
-![OP](https://github.com/user-attachments/assets/4323fe2a-79bb-4ca4-b79e-2ef326dc2b9b)
 
 ## RESULT:
 The program for implementing simple webserver is executed successfully.
